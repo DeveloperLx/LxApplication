@@ -3,6 +3,8 @@
 //  LxApplication
 //
 
+#define PRINTF(fmt, ...)    printf("%s\n",[[NSString stringWithFormat:fmt,##__VA_ARGS__]UTF8String])
+
 #import "LxApplication.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <ifaddrs.h>
@@ -41,6 +43,8 @@ static __weak UIResponder * currentFirstResponder = nil;
 @end
 
 @implementation LxApplication
+
+@synthesize applicationOrientation = _applicationOrientation;
 
 - (UIResponder *)currentFirstResponder
 {
@@ -170,7 +174,7 @@ static __weak UIResponder * currentFirstResponder = nil;
 
 - (NSString *)networkType
 {
-    id dataNetworkType = [self.statusBarForegroundView valueForKey:@"dataNetworkType"];
+    id dataNetworkType = [self.statusBarDataNetworkItemView valueForKey:@"dataNetworkType"];
     switch ([dataNetworkType integerValue]) {
         case 0:
         {
@@ -230,6 +234,28 @@ static __weak UIResponder * currentFirstResponder = nil;
     return [[self.statusBarBatteryItemView valueForKey:@"state"]boolValue];
 }
 
+- (UIInterfaceOrientation)applicationOrientation
+{
+    return _applicationOrientation;
+}
+
+- (void)setApplicationOrientation:(UIInterfaceOrientation)applicationOrientation
+{
+    _applicationOrientation = applicationOrientation;
+    
+    NSAssert([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)], @"Cannot rotate the orientation"); //
+    
+#if __has_feature(objc_arc)
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:@selector(setOrientation:)]];
+    invocation.selector = @selector(setOrientation:);
+    invocation.target = [UIDevice currentDevice];
+    [invocation setArgument:&applicationOrientation atIndex:2];
+    [invocation invoke];
+#else
+    [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:@(applicationOrientation)];
+#endif
+}
+
 - (void)dismissKeyboard
 {
     [self sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
@@ -240,7 +266,7 @@ static __weak UIResponder * currentFirstResponder = nil;
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
-- (void)palySoundForPath:(NSString *)soundPath
+- (void)playSoundForPath:(NSString *)soundPath
 {
     NSAssert([[NSFileManager defaultManager]fileExistsAtPath:soundPath], @"The soundPath(%@) is error or not exists.", soundPath);  //
     
@@ -252,46 +278,40 @@ static __weak UIResponder * currentFirstResponder = nil;
 
 - (void)sendEvent:(UIEvent *)event
 {
-    NSLog(@"sendEvent"); //
-//    NSLog(@"self.currentFirstResponder = %@", self.currentFirstResponder); //
+    if (self.forbidAllDeviceEvents) {
+        return;
+    }
     
-//    UITouch * aTouch = [event.allTouches anyObject];
-//    NSLog(@"window = %@", aTouch.window);    // 0x7f8a7a633940  0x7f8a7a469fe0
-//    NSLog(@"view = %@", aTouch.view);    //
-//    NSLog(@"gestureRecognizers = %@", aTouch.gestureRecognizers);    //
-//    NSLog(@"majorRadius = %f", aTouch.majorRadius);    //
-//    NSLog(@"majorRadiusTolerance = %f", aTouch.majorRadiusTolerance);    //
-    
+#if OPEN_EVENTS_OBSERVER
     switch (event.type) {
         case UIEventTypeTouches:
         {
             switch ([[event.allTouches anyObject] phase]) {
                 case UITouchPhaseBegan:
                 {
-                    
+                    PRINTF(@"LxApplication: Touch Began");   //
                 }
                     break;
                 case UITouchPhaseMoved:
                 {
-                    
+                    PRINTF(@"LxApplication: Touch Moved");   //
                 }
                     break;
                 case UITouchPhaseStationary:
                 {
-                    
+                    PRINTF(@"LxApplication: Touch Stationary");   //
                 }
                     break;
                 case UITouchPhaseEnded:
                 {
-                    
+                    PRINTF(@"LxApplication: Touch Ended");   //
                 }
                     break;
                 case UITouchPhaseCancelled:
                 {
-                    
+                    PRINTF(@"LxApplication: Touch Cancelled");   //
                 }
                     break;
-                    
                 default:
                     break;
             }
@@ -299,17 +319,80 @@ static __weak UIResponder * currentFirstResponder = nil;
             break;
         case UIEventTypeMotion:
         {
-            
+            switch (event.subtype) {
+                case UIEventSubtypeMotionShake:
+                {
+                    PRINTF(@"LxApplication: Motion Shake");   //
+                }
+                    break;
+                default:
+                    break;
+            }
         }
             break;
         case UIEventTypeRemoteControl:
         {
-            
+            switch (event.subtype) {
+                case UIEventSubtypeRemoteControlPlay:
+                {
+                    PRINTF(@"LxApplication: RemoteControl Play");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlPause:
+                {
+                    PRINTF(@"LxApplication: RemoteControl Pause");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlStop:
+                {
+                    PRINTF(@"LxApplication: RemoteControl Stop");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlTogglePlayPause:
+                {
+                    PRINTF(@"LxApplication: RemoteControl TogglePlayPause");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlNextTrack:
+                {
+                    PRINTF(@"LxApplication: RemoteControl NextTrack");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlPreviousTrack:
+                {
+                    PRINTF(@"LxApplication: RemoteControl PreviousTrack");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlBeginSeekingBackward:
+                {
+                    PRINTF(@"LxApplication: RemoteControl BeginSeekingBackward");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlEndSeekingBackward:
+                {
+                    PRINTF(@"LxApplication: RemoteControl EndSeekingBackward");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlBeginSeekingForward:
+                {
+                    PRINTF(@"LxApplication: RemoteControl BeginSeekingForward");   //
+                }
+                    break;
+                case UIEventSubtypeRemoteControlEndSeekingForward:
+                {
+                    PRINTF(@"LxApplication: RemoteControl EndSeekingForward");   //
+                }
+                    break;
+                default:
+                    break;
+            }
         }
             break;
         default:
             break;
     }
+#endif
+    
     [super sendEvent:event];
 }
 

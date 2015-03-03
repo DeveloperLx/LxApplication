@@ -5,7 +5,12 @@
 
 #import <UIKit/UIKit.h>
 
-#warning You need rewrite main.m like \
+/**
+ *  To close events observer, set this macro as 0.
+ */
+#define OPEN_EVENTS_OBSERVER    1
+
+#warning You need overwrite main.m like \
 \
    ........................    \
    #import "LxApplication.h"   \
@@ -41,8 +46,12 @@
 @property (nonatomic,readonly) NSInteger batteryCapacity;
 @property (nonatomic,readonly) BOOL isChargingBattery;
 
+@property (nonatomic,assign) BOOL forbidAllDeviceEvents;
+
+@property (nonatomic,assign) UIInterfaceOrientation applicationOrientation;
+
 - (void)dismissKeyboard;
 - (void)vibrate;
-- (void)palySoundForPath:(NSString *)soundPath;
+- (void)playSoundForPath:(NSString *)soundPath;
 
 @end
