@@ -38,16 +38,16 @@ Usage
 Be careful            
 -----------
     You need overwrite main.m like 
-   ........................    
-   #import <UIKit/UIKit.h>
-   #import "AppDelegate.h"
-   #import "LxApplication.h"
+###
+    #import <UIKit/UIKit.h>
+    #import "AppDelegate.h"
+    #import "LxApplication.h"
 
-   int main(int argc, char * argv[]) {
-       @autoreleasepool {
+    int main(int argc, char * argv[]) {
+        @autoreleasepool {
             return UIApplicationMain(argc, argv, NSStringFromClass([LxApplication class]), NSStringFromClass([AppDelegate class]));
         }
-   }
+    }
 License
 -----------
     LxApplication is available under the Apache License 2.0. See the LICENSE file for more info.
