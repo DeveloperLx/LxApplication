@@ -50,6 +50,8 @@
 
 @property (nonatomic,assign) UIInterfaceOrientation applicationOrientation;
 
+@property (nonatomic,assign) BOOL applicationRun;
+
 - (void)dismissKeyboard;
 - (void)vibrate;
 - (void)playSoundForPath:(NSString *)soundPath;

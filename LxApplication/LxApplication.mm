@@ -44,7 +44,7 @@ static __weak UIResponder * currentFirstResponder = nil;
 
 @implementation LxApplication
 
-@synthesize applicationOrientation = _applicationOrientation;
+@synthesize applicationOrientation = _applicationOrientation,applicationRun = _applicationRun;
 
 - (UIResponder *)currentFirstResponder
 {
@@ -254,6 +254,20 @@ static __weak UIResponder * currentFirstResponder = nil;
 #else
     [[UIDevice currentDevice] performSelector:@selector(setOrientation:) withObject:@(applicationOrientation)];
 #endif
+}
+
+- (BOOL)applicationRun
+{
+    return _applicationRun;
+}
+
+- (void)setApplicationRun:(BOOL)applicationRun
+{
+    _applicationRun = applicationRun;
+    
+    while (applicationRun) {
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, MAXFLOAT, false);
+    }
 }
 
 - (void)dismissKeyboard
