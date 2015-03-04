@@ -15,7 +15,7 @@
 		3579A4DD1A979FC90049227A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3579A4DC1A979FC90049227A /* Images.xcassets */; };
 		3579A4E01A979FC90049227A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3579A4DE1A979FC90049227A /* LaunchScreen.xib */; };
 		3579A4EC1A979FC90049227A /* LxApplicationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3579A4EB1A979FC90049227A /* LxApplicationTests.m */; };
-		35FEB07F1A9CC4BA00595720 /* LxApplication.mm in Sources */ = {isa = PBXBuildFile; fileRef = 35FEB07E1A9CC4BA00595720 /* LxApplication.mm */; };
+		35FEB07F1A9CC4BA00595720 /* LxApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 35FEB07E1A9CC4BA00595720 /* LxApplication.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +44,7 @@
 		3579A4EA1A979FC90049227A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3579A4EB1A979FC90049227A /* LxApplicationTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LxApplicationTests.m; sourceTree = "<group>"; };
 		35FEB07D1A9CC4BA00595720 /* LxApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LxApplication.h; path = ../../LxApplication/LxApplication.h; sourceTree = "<group>"; };
-		35FEB07E1A9CC4BA00595720 /* LxApplication.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LxApplication.mm; path = ../../LxApplication/LxApplication.mm; sourceTree = "<group>"; };
+		35FEB07E1A9CC4BA00595720 /* LxApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LxApplication.m; path = ../../LxApplication/LxApplication.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				35FEB07D1A9CC4BA00595720 /* LxApplication.h */,
-				35FEB07E1A9CC4BA00595720 /* LxApplication.mm */,
+				35FEB07E1A9CC4BA00595720 /* LxApplication.m */,
 			);
 			name = LxApplication;
 			sourceTree = "<group>";
@@ -237,7 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3579A4D81A979FC90049227A /* ViewController.m in Sources */,
-				35FEB07F1A9CC4BA00595720 /* LxApplication.mm in Sources */,
+				35FEB07F1A9CC4BA00595720 /* LxApplication.m in Sources */,
 				3579A4D51A979FC90049227A /* AppDelegate.m in Sources */,
 				3579A4D21A979FC90049227A /* main.m in Sources */,
 			);
